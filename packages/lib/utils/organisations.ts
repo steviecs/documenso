@@ -133,6 +133,7 @@ export const generateDefaultOrganisationSettings = (): Omit<
     brandingLogo: '',
     brandingUrl: '',
     brandingCompanyDetails: '',
+    brandingColor: '',
 
     emailId: null,
     emailReplyTo: null,
