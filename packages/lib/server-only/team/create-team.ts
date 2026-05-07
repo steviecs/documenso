@@ -136,7 +136,7 @@ export const createTeam = async ({
         .exhaustive(),
     );
 
-  await prisma
+  return await prisma
     .$transaction(
       async (tx) => {
         const teamSettings = await tx.teamGlobalSettings.create({
@@ -170,7 +170,7 @@ export const createTeam = async ({
 
         // Create the internal team groups.
         await Promise.all(
-          TEAM_INTERNAL_GROUPS.map(async (teamGroup) =>
+          TEAM_INTERNAL_GROUPS.map((teamGroup) =>
             tx.organisationGroup.create({
               data: {
                 id: generateDatabaseId('org_group'),
@@ -188,6 +188,8 @@ export const createTeam = async ({
             }),
           ),
         );
+
+        return { teamId: team.id };
       },
       {
         timeout: 7500,

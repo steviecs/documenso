@@ -1,17 +1,18 @@
 import { z } from 'zod';
 
+import type { TrpcRouteMeta } from '../trpc';
 import { ZTeamUrlSchema } from './schema';
 import { ZTeamNameSchema } from './schema';
 
-// export const createTeamMeta: TrpcOpenApiMeta = {
-//   openapi: {
-//     method: 'POST',
-//     path: '/team/create',
-//     summary: 'Create team',
-//     description: 'Create a new team',
-//     tags: ['Team'],
-//   },
-// };
+export const createTeamMeta: TrpcRouteMeta = {
+  openapi: {
+    method: 'POST',
+    path: '/team/create',
+    summary: 'Create team',
+    description: 'Create a new team within an organisation.',
+    tags: ['Team'],
+  },
+};
 
 export const ZCreateTeamRequestSchema = z.object({
   organisationId: z.string(),
@@ -24,6 +25,8 @@ export const ZCreateTeamRequestSchema = z.object({
     ),
 });
 
-export const ZCreateTeamResponseSchema = z.void();
+export const ZCreateTeamResponseSchema = z.object({
+  teamId: z.number(),
+});
 
 export type TCreateTeamRequest = z.infer<typeof ZCreateTeamRequestSchema>;

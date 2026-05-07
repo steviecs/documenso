@@ -12,6 +12,18 @@ import {
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
 import { zEmail } from '@documenso/lib/utils/zod';
 
+import type { TrpcRouteMeta } from '../trpc';
+
+export const updateTeamSettingsMeta: TrpcRouteMeta = {
+  openapi: {
+    method: 'POST',
+    path: '/team/settings/update',
+    summary: 'Update team settings',
+    description: "Update a team's settings, including branding (name, logo) and document defaults.",
+    tags: ['Team'],
+  },
+};
+
 /**
  * Null = Inherit from organisation.
  * Undefined = Do nothing

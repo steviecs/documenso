@@ -12,9 +12,11 @@ import { authenticatedProcedure } from '../trpc';
 import {
   ZUpdateTeamSettingsRequestSchema,
   ZUpdateTeamSettingsResponseSchema,
+  updateTeamSettingsMeta,
 } from './update-team-settings.types';
 
 export const updateTeamSettingsRoute = authenticatedProcedure
+  .meta(updateTeamSettingsMeta)
   .input(ZUpdateTeamSettingsRequestSchema)
   .output(ZUpdateTeamSettingsResponseSchema)
   .mutation(async ({ ctx, input }) => {
