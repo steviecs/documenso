@@ -5,6 +5,7 @@ type BrandingContextValue = {
   brandingUrl: string;
   brandingLogo: string;
   brandingCompanyDetails: string;
+  brandingColor: string;
   brandingHidePoweredBy: boolean;
 };
 
@@ -15,6 +16,7 @@ const defaultBrandingContextValue: BrandingContextValue = {
   brandingUrl: '',
   brandingLogo: '',
   brandingCompanyDetails: '',
+  brandingColor: '',
   brandingHidePoweredBy: false,
 };
 

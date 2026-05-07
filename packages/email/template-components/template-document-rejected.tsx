@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/react/macro';
 
 import { Button, Heading, Text } from '../components';
+import { useBranding } from '../providers/branding';
 
 export interface TemplateDocumentRejectedProps {
   documentName: string;
@@ -15,6 +16,11 @@ export function TemplateDocumentRejected({
   rejectionReason,
   documentUrl,
 }: TemplateDocumentRejectedProps) {
+  const branding = useBranding();
+  const buttonStyle = branding.brandingColor
+    ? { backgroundColor: branding.brandingColor, color: '#ffffff' }
+    : undefined;
+
   return (
     <div className="mt-4">
       <Heading className="mb-4 text-center text-2xl font-semibold text-slate-800">
@@ -39,7 +45,8 @@ export function TemplateDocumentRejected({
 
       <Button
         href={documentUrl}
-        className="bg-documenso-500 inline-flex items-center justify-center rounded-lg px-6 py-3 text-center text-sm font-medium text-black no-underline"
+        className="inline-flex items-center justify-center rounded-lg bg-documenso-500 px-6 py-3 text-center text-sm font-medium text-black no-underline"
+        style={buttonStyle}
       >
         <Trans>View Document</Trans>
       </Button>

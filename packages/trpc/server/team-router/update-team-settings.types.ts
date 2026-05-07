@@ -51,6 +51,7 @@ export const ZUpdateTeamSettingsRequestSchema = z.object({
     brandingLogo: z.string().nullish(),
     brandingUrl: z.string().nullish(),
     brandingCompanyDetails: z.string().nullish(),
+    brandingColor: z.string().nullish(),
 
     // Email related settings.
     emailId: z.string().nullish(),

@@ -50,6 +50,7 @@ export const updateTeamSettingsRoute = authenticatedProcedure
       brandingLogo,
       brandingUrl,
       brandingCompanyDetails,
+      brandingColor,
 
       // Email related settings.
       emailId,
@@ -167,6 +168,7 @@ export const updateTeamSettingsRoute = authenticatedProcedure
             brandingLogo,
             brandingUrl,
             brandingCompanyDetails,
+            brandingColor,
 
             // Email related settings.
             emailId,

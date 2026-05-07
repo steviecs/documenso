@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/react/macro';
 
 import { Button, Section, Text } from '../components';
+import { useBranding } from '../providers/branding';
 import { TemplateDocumentImage } from './template-document-image';
 
 export type TemplateRecipientExpiredProps = {
@@ -18,6 +19,10 @@ export const TemplateRecipientExpired = ({
   documentLink,
   assetBaseUrl,
 }: TemplateRecipientExpiredProps) => {
+  const branding = useBranding();
+  const buttonStyle = branding.brandingColor
+    ? { backgroundColor: branding.brandingColor, color: '#ffffff' }
+    : undefined;
   const displayName = recipientName || recipientEmail;
 
   return (
@@ -41,6 +46,7 @@ export const TemplateRecipientExpired = ({
         <Section className="my-4 text-center">
           <Button
             className="inline-flex items-center justify-center rounded-lg bg-documenso-500 px-6 py-3 text-center text-sm font-medium text-white no-underline"
+            style={buttonStyle}
             href={documentLink}
           >
             <Trans>View Document</Trans>
