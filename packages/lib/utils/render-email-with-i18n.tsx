@@ -24,7 +24,16 @@ export const renderEmailWithI18N = async (
 
     i18n.activate(lang);
 
-    return renderWithI18N(component, { i18n, ...otherOptions });
+    const result = await renderWithI18N(component, { i18n, ...otherOptions });
+
+    // React 18's renderToPipeableStream inserts <!--$--> / <!--/$--> Suspense
+    // boundary markers. SendGrid's XHTML parser (triggered by the email DOCTYPE)
+    // treats a comment before <html> as invalid and silently drops the <body>.
+    if (typeof result === 'string') {
+      return result.replace(/<!--\$(?:!)?-->/g, '').replace(/<!--\/\$-->/g, '');
+    }
+
+    return result;
   } catch (err) {
     console.error(err);
     throw new Error('Failed to render email');
