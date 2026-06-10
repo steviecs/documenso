@@ -194,6 +194,11 @@ export const run = async ({
         htmlLength: html?.length ?? 0,
         textLength: text?.length ?? 0,
         hasBody: html?.includes('<body') ?? false,
+        bodyContentLength: (() => {
+          const m = html?.match(/<body[^>]*>([\s\S]*)<\/body>/);
+          return m ? m[1].length : 0;
+        })(),
+        htmlHead: html?.slice(0, 300),
         recipientId: recipient.id,
         envelopeId: envelope.id,
       });
