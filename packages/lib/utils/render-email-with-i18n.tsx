@@ -37,15 +37,10 @@ export const renderEmailWithI18N = async (
     // Something in nodemailer's QP encoder stalls on this density and emits an
     // incomplete MIME part, delivering a blank email. Strip the inner spacer div
     // entirely — the preview text in the outer div (data-skip-in-text) is kept.
-    // We target only plain <div> (no attributes) to avoid matching the outer div.
-    // Build char class from code points so the source stays ASCII-clean.
-    const spacerCharClass = [0x00a0, 0x200b, 0x200c, 0x200d, 0x200e, 0x200f, 0xfeff]
-      .map((cp) => String.fromCodePoint(cp))
-      .join('');
-    // eslint-disable-next-line no-misleading-character-class
-    const spacerDivPattern = new RegExp(`<div>[${spacerCharClass}]+<\\/div>`, 'g');
-
-    return result.replace(spacerDivPattern, '');
+    // [^<]* matches any non-tag content including NBSP/zero-width chars and any
+    // surrounding whitespace React may emit. Only plain <div> (no attributes)
+    // is matched, so the outer preview div (which has style="...") is unaffected.
+    return result.replace(/<div>[^<]*<\/div>/g, '');
   } catch (err) {
     console.error(err);
     throw new Error('Failed to render email');

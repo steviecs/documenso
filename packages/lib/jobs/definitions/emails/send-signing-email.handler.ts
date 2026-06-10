@@ -192,9 +192,8 @@ export const run = async ({
 
       io.logger.info('[send-signing-email] html diagnostics', {
         htmlLength: html?.length ?? 0,
-        endsCorrectly: html?.endsWith('</html>') ?? false,
-        hasDataUrlLogo: html?.includes('data:image') ?? false,
-        logoSrc: branding?.brandingLogo?.slice(0, 80) ?? null,
+        hasSpacerDiv: html?.includes('<div>\n') ?? false,
+        htmlHead: html?.slice(0, 600),
         htmlTail: html?.slice(-200),
       });
 
