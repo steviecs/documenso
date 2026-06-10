@@ -26,14 +26,24 @@ export const renderEmailWithI18N = async (
 
     const result = await renderWithI18N(component, { i18n, ...otherOptions });
 
-    // React 18's renderToPipeableStream inserts <!--$--> / <!--/$--> Suspense
-    // boundary markers. SendGrid's XHTML parser (triggered by the email DOCTYPE)
-    // treats a comment before <html> as invalid and silently drops the <body>.
-    if (typeof result === 'string') {
-      return result.replace(/<!--\$(?:!)?-->/g, '').replace(/<!--\/\$-->/g, '');
+    if (typeof result !== 'string') {
+      return result;
     }
 
-    return result;
+    // Strip React 18 renderToPipeableStream Suspense boundary markers.
+    let html = result.replace(/<!--\$(?:!)?-->/g, '').replace(/<!--\/\$-->/g, '');
+
+    // react-email places the <Preview> component as a <div> directly between
+    // </head> and <body>. SendGrid's HTML processor sees this orphaned <div>,
+    // implicitly opens a body to contain it, inserts its tracking pixel there,
+    // and then discards the actual <body> tag as a duplicate — delivering a
+    // blank email. Fix: move anything between </head> and <body> inside <body>.
+    html = html.replace(
+      /(<\/head>)([\s\S]*?)(<body(?:\s[^>]*)?>\s*)/i,
+      (_, head, between, body) => `${head}${body}${between}`,
+    );
+
+    return html;
   } catch (err) {
     console.error(err);
     throw new Error('Failed to render email');
