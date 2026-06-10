@@ -176,20 +176,6 @@ export const run = async ({
     }),
   ]);
 
-  io.logger.info('[send-reminder-email] render complete', {
-    htmlLength: html?.length ?? 0,
-    textLength: text?.length ?? 0,
-    hasBody: html?.includes('<body') ?? false,
-    recipientId: recipient.id,
-    envelopeId: envelope.id,
-  });
-
-  if (!html || html.length < 100) {
-    throw new Error(
-      `[send-reminder-email] rendered HTML is suspiciously short (${html?.length ?? 0} chars) — refusing to send blank email`,
-    );
-  }
-
   await mailer.sendMail({
     to: {
       name: recipient.name,

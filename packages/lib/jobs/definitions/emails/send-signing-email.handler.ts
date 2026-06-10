@@ -190,25 +190,6 @@ export const run = async ({
         }),
       ]);
 
-      io.logger.info('[send-signing-email] render complete', {
-        htmlLength: html?.length ?? 0,
-        textLength: text?.length ?? 0,
-        hasBody: html?.includes('<body') ?? false,
-        bodyContentLength: (() => {
-          const m = html?.match(/<body[^>]*>([\s\S]*)<\/body>/);
-          return m ? m[1].length : 0;
-        })(),
-        htmlHead: html?.slice(0, 300),
-        recipientId: recipient.id,
-        envelopeId: envelope.id,
-      });
-
-      if (!html || html.length < 100) {
-        throw new Error(
-          `[send-signing-email] rendered HTML is suspiciously short (${html?.length ?? 0} chars) — refusing to send blank email`,
-        );
-      }
-
       await mailer.sendMail({
         to: {
           name: recipient.name,
