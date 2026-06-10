@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/react/macro';
 
 import { Button, Section, Text } from '../components';
-import { useBranding } from '../providers/branding';
 import { TemplateDocumentImage } from './template-document-image';
 
 export type TemplateRecipientExpiredProps = {
@@ -10,6 +9,7 @@ export type TemplateRecipientExpiredProps = {
   recipientEmail: string;
   documentLink: string;
   assetBaseUrl: string;
+  brandingColor?: string;
 };
 
 export const TemplateRecipientExpired = ({
@@ -18,10 +18,10 @@ export const TemplateRecipientExpired = ({
   recipientEmail,
   documentLink,
   assetBaseUrl,
+  brandingColor,
 }: TemplateRecipientExpiredProps) => {
-  const branding = useBranding();
-  const buttonStyle = branding.brandingColor
-    ? { backgroundColor: branding.brandingColor, color: '#ffffff' }
+  const buttonStyle = brandingColor
+    ? { backgroundColor: brandingColor, color: '#ffffff' }
     : undefined;
   const displayName = recipientName || recipientEmail;
 

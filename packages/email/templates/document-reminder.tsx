@@ -63,6 +63,7 @@ export const DocumentReminderEmailTemplate = ({
                 signDocumentLink={signDocumentLink}
                 assetBaseUrl={assetBaseUrl}
                 role={role}
+                brandingColor={branding.brandingColor || undefined}
               />
             </Section>
           </Container>

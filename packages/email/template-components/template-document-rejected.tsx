@@ -1,13 +1,13 @@
 import { Trans } from '@lingui/react/macro';
 
 import { Button, Heading, Text } from '../components';
-import { useBranding } from '../providers/branding';
 
 export interface TemplateDocumentRejectedProps {
   documentName: string;
   recipientName: string;
   rejectionReason?: string;
   documentUrl: string;
+  brandingColor?: string;
 }
 
 export function TemplateDocumentRejected({
@@ -15,10 +15,10 @@ export function TemplateDocumentRejected({
   recipientName: signerName,
   rejectionReason,
   documentUrl,
+  brandingColor,
 }: TemplateDocumentRejectedProps) {
-  const branding = useBranding();
-  const buttonStyle = branding.brandingColor
-    ? { backgroundColor: branding.brandingColor, color: '#ffffff' }
+  const buttonStyle = brandingColor
+    ? { backgroundColor: brandingColor, color: '#ffffff' }
     : undefined;
 
   return (

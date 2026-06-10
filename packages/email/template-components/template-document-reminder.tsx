@@ -6,7 +6,6 @@ import { match } from 'ts-pattern';
 import { RECIPIENT_ROLES_DESCRIPTION } from '@documenso/lib/constants/recipient-roles';
 
 import { Button, Section, Text } from '../components';
-import { useBranding } from '../providers/branding';
 import { TemplateDocumentImage } from './template-document-image';
 
 export interface TemplateDocumentReminderProps {
@@ -15,6 +14,7 @@ export interface TemplateDocumentReminderProps {
   signDocumentLink: string;
   assetBaseUrl: string;
   role: RecipientRole;
+  brandingColor?: string;
 }
 
 export const TemplateDocumentReminder = ({
@@ -23,11 +23,11 @@ export const TemplateDocumentReminder = ({
   signDocumentLink,
   assetBaseUrl,
   role,
+  brandingColor,
 }: TemplateDocumentReminderProps) => {
   const { _ } = useLingui();
-  const branding = useBranding();
-  const buttonStyle = branding.brandingColor
-    ? { backgroundColor: branding.brandingColor, color: '#ffffff' }
+  const buttonStyle = brandingColor
+    ? { backgroundColor: brandingColor, color: '#ffffff' }
     : undefined;
 
   const { actionVerb } = RECIPIENT_ROLES_DESCRIPTION[role];

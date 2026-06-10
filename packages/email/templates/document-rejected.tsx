@@ -54,6 +54,7 @@ export function DocumentRejectedEmail({
                 documentName={documentName}
                 documentUrl={documentUrl}
                 rejectionReason={rejectionReason}
+                brandingColor={branding.brandingColor || undefined}
               />
             </Section>
           </Container>

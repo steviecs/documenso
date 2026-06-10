@@ -87,6 +87,7 @@ export const DocumentInviteEmailTemplate = ({
                 organisationType={organisationType}
                 teamName={teamName}
                 includeSenderDetails={includeSenderDetails}
+                brandingColor={branding.brandingColor || undefined}
               />
             </Section>
           </Container>

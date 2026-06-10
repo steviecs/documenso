@@ -50,6 +50,7 @@ export const RecipientExpiredTemplate = ({
                 recipientEmail={recipientEmail}
                 documentLink={documentLink}
                 assetBaseUrl={assetBaseUrl}
+                brandingColor={branding.brandingColor || undefined}
               />
             </Section>
           </Container>

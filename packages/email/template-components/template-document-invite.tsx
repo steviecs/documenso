@@ -6,7 +6,6 @@ import { P, match } from 'ts-pattern';
 import { RECIPIENT_ROLES_DESCRIPTION } from '@documenso/lib/constants/recipient-roles';
 
 import { Button, Section, Text } from '../components';
-import { useBranding } from '../providers/branding';
 import { TemplateDocumentImage } from './template-document-image';
 
 export interface TemplateDocumentInviteProps {
@@ -20,6 +19,7 @@ export interface TemplateDocumentInviteProps {
   teamName?: string;
   includeSenderDetails?: boolean;
   organisationType?: OrganisationType;
+  brandingColor?: string;
 }
 
 export const TemplateDocumentInvite = ({
@@ -32,11 +32,11 @@ export const TemplateDocumentInvite = ({
   teamName,
   includeSenderDetails,
   organisationType,
+  brandingColor,
 }: TemplateDocumentInviteProps) => {
   const { _ } = useLingui();
-  const branding = useBranding();
-  const buttonStyle = branding.brandingColor
-    ? { backgroundColor: branding.brandingColor, color: '#ffffff' }
+  const buttonStyle = brandingColor
+    ? { backgroundColor: brandingColor, color: '#ffffff' }
     : undefined;
 
   const { actionVerb } = RECIPIENT_ROLES_DESCRIPTION[role];
