@@ -190,6 +190,14 @@ export const run = async ({
         }),
       ]);
 
+      io.logger.info('[send-signing-email] html diagnostics', {
+        htmlLength: html?.length ?? 0,
+        endsCorrectly: html?.endsWith('</html>') ?? false,
+        hasDataUrlLogo: html?.includes('data:image') ?? false,
+        logoSrc: branding?.brandingLogo?.slice(0, 80) ?? null,
+        htmlTail: html?.slice(-200),
+      });
+
       await mailer.sendMail({
         to: {
           name: recipient.name,
