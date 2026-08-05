@@ -28,15 +28,19 @@ const getAuthSecret = () => {
 
 /**
  * Generic auth session cookie options.
+ *
+ * Must be computed per call so the `expires` date is relative to the current
+ * request, not to when the server process started.
  */
-export const sessionCookieOptions = {
-  httpOnly: true,
-  path: '/',
-  sameSite: useSecureCookies ? 'none' : 'lax',
-  secure: useSecureCookies,
-  domain: getCookieDomain(),
-  expires: new Date(Date.now() + AUTH_SESSION_LIFETIME),
-} as const;
+export const getSessionCookieOptions = () =>
+  ({
+    httpOnly: true,
+    path: '/',
+    sameSite: useSecureCookies ? 'none' : 'lax',
+    secure: useSecureCookies,
+    domain: getCookieDomain(),
+    expires: new Date(Date.now() + AUTH_SESSION_LIFETIME),
+  }) as const;
 
 export const extractSessionCookieFromHeaders = (headers: Headers): string | null => {
   return extractCookieFromHeaders(sessionCookieName, headers);
@@ -66,7 +70,7 @@ export const setSessionCookie = async (c: Context, sessionToken: string) => {
     sessionCookieName,
     sessionToken,
     getAuthSecret(),
-    sessionCookieOptions,
+    getSessionCookieOptions(),
   ).catch((err) => {
     appLog('SetSessionCookie', `Error setting signed cookie: ${err}`);
 
@@ -81,7 +85,7 @@ export const setSessionCookie = async (c: Context, sessionToken: string) => {
  * @param sessionToken - The session token to set.
  */
 export const deleteSessionCookie = (c: Context) => {
-  deleteCookie(c, sessionCookieName, sessionCookieOptions);
+  deleteCookie(c, sessionCookieName, getSessionCookieOptions());
 };
 
 export const getCsrfCookie = async (c: Context) => {
@@ -94,7 +98,7 @@ export const setCsrfCookie = async (c: Context) => {
   const csrfToken = generateSessionToken();
 
   await setSignedCookie(c, csrfCookieName, csrfToken, getAuthSecret(), {
-    ...sessionCookieOptions,
+    ...getSessionCookieOptions(),
 
     // Explicity set to undefined for session lived cookie.
     expires: undefined,
