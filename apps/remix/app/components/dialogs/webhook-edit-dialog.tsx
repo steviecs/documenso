@@ -43,7 +43,8 @@ type TEditWebhookFormSchema = z.infer<typeof ZEditWebhookFormSchema>;
 
 export type WebhookEditDialogProps = {
   trigger?: React.ReactNode;
-  webhook: Webhook;
+  webhook: Pick<Webhook, 'id' | 'webhookUrl' | 'eventTriggers' | 'enabled'> &
+    Partial<Pick<Webhook, 'secret'>>;
 } & Omit<DialogPrimitive.DialogProps, 'children'>;
 
 export const WebhookEditDialog = ({ trigger, webhook, ...props }: WebhookEditDialogProps) => {
@@ -52,6 +53,17 @@ export const WebhookEditDialog = ({ trigger, webhook, ...props }: WebhookEditDia
 
   const [open, setOpen] = useState(false);
 
+  // The webhooks list response omits `secret` since it is exposed over the
+  // public API, so a table row won't carry one. Fetch the full record before
+  // editing, otherwise saving would overwrite the secret with an empty string.
+  const { data: fullWebhook } = trpc.webhook.getWebhookById.useQuery(
+    { id: webhook.id },
+    { enabled: open && webhook.secret === undefined },
+  );
+
+  const secret = webhook.secret !== undefined ? webhook.secret : fullWebhook?.secret;
+  const isSecretLoading = webhook.secret === undefined && fullWebhook === undefined;
+
   const { mutateAsync: updateWebhook } = trpc.webhook.editWebhook.useMutation();
 
   const form = useForm<TEditWebhookFormSchema>({
@@ -59,7 +71,7 @@ export const WebhookEditDialog = ({ trigger, webhook, ...props }: WebhookEditDia
     values: {
       webhookUrl: webhook?.webhookUrl ?? '',
       eventTriggers: webhook?.eventTriggers ?? [],
-      secret: webhook?.secret ?? '',
+      secret: secret ?? '',
       enabled: webhook?.enabled ?? true,
     },
   });
@@ -107,7 +119,7 @@ export const WebhookEditDialog = ({ trigger, webhook, ...props }: WebhookEditDia
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <fieldset
               className="flex h-full flex-col gap-y-6"
-              disabled={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting || isSecretLoading}
             >
               <div className="flex flex-col-reverse gap-4 md:flex-row">
                 <FormField

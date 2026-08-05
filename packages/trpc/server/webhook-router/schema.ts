@@ -51,6 +51,8 @@ export const ZWebhookResponseSchema = z.object({
 
 export const ZGetTeamWebhooksResponseSchema = ZWebhookResponseSchema.array();
 
+export type TWebhookResponse = z.infer<typeof ZWebhookResponseSchema>;
+
 export const ZCreateWebhookRequestSchema = z.object({
   webhookUrl: ZWebhookUrlSchema,
   eventTriggers: z

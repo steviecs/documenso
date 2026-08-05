@@ -3,12 +3,12 @@ import { useMemo } from 'react';
 import { msg } from '@lingui/core/macro';
 import { Plural, useLingui } from '@lingui/react/macro';
 import { Trans } from '@lingui/react/macro';
-import type { Webhook } from '@prisma/client';
 import { EditIcon, Loader, MoreHorizontalIcon, ScrollTextIcon, Trash2Icon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { toFriendlyWebhookEventName } from '@documenso/lib/universal/webhook/to-friendly-webhook-event-name';
 import { trpc } from '@documenso/trpc/react';
+import type { TWebhookResponse } from '@documenso/trpc/server/webhook-router/schema';
 import { Badge } from '@documenso/ui/primitives/badge';
 import { DataTable, type DataTableColumnDef } from '@documenso/ui/primitives/data-table';
 import {
@@ -154,7 +154,7 @@ export default function WebhookPage() {
   );
 }
 
-const WebhookTableActionDropdown = ({ webhook }: { webhook: Webhook }) => {
+const WebhookTableActionDropdown = ({ webhook }: { webhook: TWebhookResponse }) => {
   const team = useCurrentTeam();
 
   return (
